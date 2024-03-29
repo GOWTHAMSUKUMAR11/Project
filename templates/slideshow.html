@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Slideshow</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .slideshow-container {
+            max-width: 800px;
+            position: relative;
+            text-align: center;
+        }
+
+        .slideshow-heading {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .mySlides {
+            display: none;
+        }
+
+        .slideshow-image {
+            max-width: 100%;
+            max-height: 100vh;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Add left and right arrows */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            user-select: none;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .prev {
+            left: 0;
+        }
+
+        .next {
+            right: 0;
+        }
+
+        /* On hover, add a black background color with a little bit see-through */
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+<div class="slideshow-container">
+    <h1 class="slideshow-heading">IMAGE ENCRYPTION AND DECRYPTION SCHEME USING LOGISTIC CHAOTIC MAP AND PIXEL SUBSTITUTION</h1>
+    {% for image_name in image_names %}
+    <div class="mySlides">
+        <img class="slideshow-image" src="{{ url_for('static', filename='uploads/' + image_name) }}" alt="{{ image_name }}">
+        <p>{{ image_name }}</p>
+    </div>
+    {% endfor %}
+
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+
+        slides[slideIndex - 1].style.display = "block";
+    }
+</script>
+
+</body>
+</html>
