@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Image Slideshow</title>
+    <title>Image and Text Slideshow</title>
     <style>
         body {
             display: flex;
@@ -27,11 +27,16 @@
             display: none;
         }
 
-        .slideshow-image {
+        .slideshow-content {
             max-width: 100%;
             max-height: 100vh;
             display: block;
             margin: 0 auto;
+        }
+
+        .slideshow-text {
+            font-size: 16px;
+            margin-top: 10px;
         }
 
         /* Add left and right arrows */
@@ -57,7 +62,6 @@
             right: 0;
         }
 
-        /* On hover, add a black background color with a little bit see-through */
         .prev:hover, .next:hover {
             background-color: rgba(0, 0, 0, 0.8);
         }
@@ -67,10 +71,15 @@
 
 <div class="slideshow-container">
     <h1 class="slideshow-heading">IMAGE ENCRYPTION AND DECRYPTION SCHEME USING LOGISTIC CHAOTIC MAP AND PIXEL SUBSTITUTION</h1>
-    {% for image_name in image_names %}
+    {% for file in files %}
     <div class="mySlides">
-        <img class="slideshow-image" src="{{ url_for('static', filename='uploads/' + image_name) }}" alt="{{ image_name }}">
-        <p>{{ image_name }}</p>
+        {% if file.endswith('.txt') %}
+            <p class="slideshow-text">
+                Text File: <a href="{{ url_for('static', filename='uploads/' + file) }}">{{ file }}</a>
+            </p>
+        {% else %}
+            <img class="slideshow-content" src="{{ url_for('static', filename='uploads/' + file) }}" alt="{{ file }}">
+        {% endif %}
     </div>
     {% endfor %}
 

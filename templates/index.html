@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Uploader</title>
+    <title>File Uploader</title>
     <style>
-
-        .form{
+        .form {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             margin: 0;
@@ -33,39 +33,27 @@
             border: 1px solid #ddd;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
-            width: 66.6%; /* 2/3 of the page width */
-            height: 66.6vh; /* 2/3 of the page height */
+            width: 66.6%;
+            height: 36.6vh;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
+            gap: 60px;
         }
 
-        .image-container {
+        .file-container {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
-            height: 66.6%; /* 2/3 of the container's height */
+            height: 50%;
             background-color: #f5f5f5;
             border: 1px solid #ddd;
             border-radius: 5px;
             position: relative;
-        }
-
-        .image-container img {
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 5px;
-            display: none;
-        }
-
-        .image-upload-icon {
-            font-size: 48px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            margin-bottom: 20px;
+            padding: 20px;
         }
 
         .upload-button,
@@ -79,6 +67,7 @@
             cursor: pointer;
             transition: background-color 0.3s;
             margin: 10px;
+            font-size: 16px;
         }
 
         .upload-button:hover,
@@ -92,7 +81,6 @@
             justify-content: center;
         }
 
-        /* Style the custom file input */
         .custom-file-input {
             display: none;
         }
@@ -111,53 +99,65 @@
         .custom-file-label:hover {
             background-color: #2980b9;
         }
+
+        .remove-file {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #f00;
+            cursor: pointer;
+        }
     </style>
 </head>
+
 <body>
-    <form class="form" name = "imageencyption" action="." enctype="multipart/form-data" method="post">
+    <form class="form" name="fileUploader" action="." enctype="multipart/form-data" method="post">
         <div class="container">
-            <div class="image-container" id="imageContainer">
-                <img id="previewImage" src="#" alt="Uploaded Image">
-                <div class="image-upload-icon">&#x1F4F7;</div>
+            <div class="inputcont-button">
+                <div class="file-container" id="fileContainerAudio"></div>
+                <input type="file" id="fileInputAudio" class="custom-file-input" name="audio" accept="audio/*">
+                <label for="fileInputAudio" class="custom-file-label">Choose Audio</label>
+            </div>
+            <div class="inputcont-button">
+                <div class="file-container" id="fileContainerText"></div>
+                <input type="file" id="fileInputText" class="custom-file-input" name="text" accept=".txt">
+                <label for="fileInputText" class="custom-file-label">Upload Text</label>
             </div>
         </div>
 
         <div class="buttons">
-            <input type="file" id="fileInput" class="custom-file-input" name="image" accept="image/*">
-            <label for="fileInput" class="custom-file-label">Choose Image</label>
-            <button type="button" class="remove-button" id="removeButton">Image Remove</button>
-            <button type="submit" class="submit-button">Submit</button>
+            <button type="submit" class="submit-button">Encrypt files</button>
         </div>
     </form>
 
     <script>
-        const fileInput = document.getElementById('fileInput');
-        const imageContainer = document.getElementById('imageContainer');
-        const previewImage = document.getElementById('previewImage');
-        const removeButton = document.getElementById('removeButton');
-        const imageUploadIcon = document.querySelector('.image-upload-icon');
+        const fileInputAudio = document.getElementById('fileInputAudio');
+        const fileInputText = document.getElementById('fileInputText');
+        const fileContainerAudio = document.getElementById('fileContainerAudio');
+        const fileContainerText = document.getElementById('fileContainerText');
 
-        fileInput.addEventListener('change', handleFileSelect);
-        removeButton.addEventListener('click', removeImage);
+        fileInputAudio.addEventListener('change', handleFileSelect.bind(null, fileContainerAudio));
+        fileInputText.addEventListener('change', handleFileSelect.bind(null, fileContainerText));
 
-        function handleFileSelect(event) {
+        function handleFileSelect(container, event) {
             const file = event.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    previewImage.src = e.target.result;
-                    previewImage.style.display = 'block';
-                    imageUploadIcon.style.display = 'none';
-                };
-                reader.readAsDataURL(file);
+                const fileItem = document.createElement('div');
+                fileItem.classList.add('file-item');
+                fileItem.innerHTML = `
+                    <p>Uploaded File: ${file.name}</p>
+                    <span class="remove-file" onclick="removeFile(this)">X</span>
+                `;
+                container.innerHTML = '';
+                container.appendChild(fileItem);
             }
         }
 
-        function removeImage() {
-            fileInput.value = ''; // Reset the file input
-            previewImage.style.display = 'none';
-            imageUploadIcon.style.display = 'block';
+        function removeFile(element) {
+            const container = element.parentElement.parentElement;
+            container.innerHTML = '';
         }
     </script>
 </body>
+
 </html>
